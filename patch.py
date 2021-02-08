@@ -47,8 +47,8 @@ def patch_manifest_file(manifest_file):
             "@xml/network_security_config",
         )
     
-    with open(manifest_file, "w") as f:
-        f.write(ET.tostring(root, encoding="unicode"))
+    with open(manifest_file, "w", encoding="utf-8") as f:
+        f.write(ET.tostring(root, encoding="utf-8").decode())
 
 
 def patch_network_security_config(config_file):
