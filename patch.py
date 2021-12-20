@@ -46,7 +46,7 @@ def patch_manifest_file(manifest_file):
             "{http://schemas.android.com/apk/res/android}networkSecurityConfig",
             "@xml/network_security_config",
         )
-    
+
     with open(manifest_file, "w", encoding="utf-8") as f:
         f.write(ET.tostring(root, encoding="utf-8").decode())
 
@@ -69,7 +69,7 @@ def patch_network_security_config(config_file):
 """
     with open(config_file, "w") as f:
         f.write(cfg)
-    
+
 
 def main():
 
@@ -100,7 +100,9 @@ def main():
     # Patch security config of APK to trust user rook certificate
     manifest_file = Path(target_apk_unpacked) / "AndroidManifest.xml"
     patch_manifest_file(str(manifest_file))
-    config_file = Path(target_apk_unpacked) / "res" / "xml" / "network_security_config.xml"
+    config_file = (
+        Path(target_apk_unpacked) / "res" / "xml" / "network_security_config.xml"
+    )
     patch_network_security_config(str(config_file))
 
     # Repacking
@@ -109,7 +111,7 @@ def main():
     )
 
     # Signing
-    sp.run(["java", "-jar", sign, target_apk_repacked])
+    sp.run(["java", "-jar", sign, "-a", target_apk_repacked])
 
     # Clean up
     shutil.rmtree(target_apk_unpacked)

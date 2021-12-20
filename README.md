@@ -11,10 +11,11 @@ Simple python script which patches Android APK file to bypass SSL-pinning.
 
 ```sh
 python patch.py com.apk.file.to.patch.apk
-# Patched APK file: com.apk.file.to.path.s.apk will be generated
+# Patched APK file: com.apk.file.to.patch.repack-aligned-debugSigned.apk will be generated
 ```
 
 ## References
 
 - [APKtool](https://ibotpeaches.github.io/Apktool/install/)
-- [appium/sign](https://github.com/appium/sign)
+<!-- - [appium/sign](https://github.com/appium/sign) -->
+- [uber-apk-signer](https://github.com/patrickfav/uber-apk-signer)
