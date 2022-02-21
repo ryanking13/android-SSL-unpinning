@@ -91,7 +91,7 @@ def main():
         )
         exit(1)
 
-    target_apk_unpacked = target_apk.rstrip(".apk")
+    target_apk_unpacked = os.path.splitext(target_apk)[0]
     target_apk_repacked = target_apk_unpacked + ".repack.apk"
 
     # Unpacking
