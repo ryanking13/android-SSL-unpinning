@@ -15,22 +15,6 @@ def die(msg):
     exit(1)
 
 
-def check(proc):
-    chk = True
-    if os.name == "posix":  # Linux
-        try:
-            sp.check_call(["which", proc], stdout=sp.DEVNULL, stderr=sp.DEVNULL)
-        except sp.CalledProcessError:
-            chk = False
-    else:  # Windows
-        try:
-            sp.check_call(["where", proc], stdout=sp.DEVNULL, stderr=sp.DEVNULL)
-        except sp.CalledProcessError:
-            chk = False
-
-    return chk
-
-
 def patch_manifest_file(manifest_file):
     tree = ET.parse(manifest_file)
     root = tree.getroot()
@@ -73,7 +57,7 @@ def patch_network_security_config(config_file):
 
 def main():
 
-    check("java") or die("Java is not installed")
+    shutil.which("java") or die("Java is not installed")
 
     if len(sys.argv) < 2:
         usage()
