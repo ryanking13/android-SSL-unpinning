@@ -79,9 +79,10 @@ def main():
     target_apk_repacked = target_apk_unpacked + ".repack.apk"
 
     # Unpacking
+    print(f"[*] Unpacking {target_apk}...")
     sp.run(["java", "-jar", apktool, "d", target_apk])
 
-    # Patch security config of APK to trust user rook certificate
+    # Patch security config of APK to trust user root certificate
     manifest_file = Path(target_apk_unpacked) / "AndroidManifest.xml"
     patch_manifest_file(str(manifest_file))
     config_file = (
@@ -90,11 +91,25 @@ def main():
     patch_network_security_config(str(config_file))
 
     # Repacking
+    build_cmd = ["java", "-jar", apktool, "b", target_apk_unpacked, "-o", target_apk_repacked]
+
+    print(f"[*] Repacking {target_apk_unpacked} to {target_apk_repacked}...")
     sp.run(
-        ["java", "-jar", apktool, "b", target_apk_unpacked, "-o", target_apk_repacked]
+       build_cmd
     )
 
+    if not os.path.exists(target_apk_repacked):
+        print(f"[*] Failed to repack {target_apk_unpacked}. Retrying with --use-aapt2 flags")
+        sp.run(
+            build_cmd + ["--use-aapt2"]
+        )
+    
+    if not os.path.exists(target_apk_repacked):
+        die(f"[-] Failed to repack {target_apk_unpacked}")
+
+
     # Signing
+    print(f"[*] Signing {target_apk_repacked}...")
     sp.run(["java", "-jar", sign, "-a", target_apk_repacked])
 
     # Clean up
