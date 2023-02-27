@@ -1,6 +1,6 @@
-# Android-SSL-unpinning
+# android-SSL-unpinning
 
-Simple python script which patches Android APK file to bypass SSL-pinning.
+A simple Python script which patches Android APK file to bypass SSL-pinning.
 
 ## Requirements
 
@@ -10,12 +10,20 @@ Simple python script which patches Android APK file to bypass SSL-pinning.
 ## How to Run
 
 ```sh
+git clone https://github.com/ryanking13/android-SSL-unpinning
+cd android-SSL-unpinning
+
 python patch.py com.apk.file.to.patch.apk
-# Patched APK file: com.apk.file.to.patch.repack-aligned-debugSigned.apk will be generated
 ```
+
+## How it works
+
+1. Decompile the APK file using [APKtool](https://ibotpeaches.github.io/Apktool/install/)
+2. Modify `AndroidManifest.xml` and `network_security_config.xml` to trust user certificate
+3. Recompile the APK file using [APKtool](https://ibotpeaches.github.io/Apktool/install/)
+4. Sign the APK file using [uber-apk-signer](https://github.com/patrickfav/uber-apk-signer)
 
 ## References
 
 - [APKtool](https://ibotpeaches.github.io/Apktool/install/)
-<!-- - [appium/sign](https://github.com/appium/sign) -->
 - [uber-apk-signer](https://github.com/patrickfav/uber-apk-signer)
